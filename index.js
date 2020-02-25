@@ -33,7 +33,12 @@ function getContentFactory (serverless) {
     }
     const isJsOrJSON = absolutePath.match(/.*\.js/i) || absolutePath.match(/.*\.json/i)
     if (isJsOrJSON) {
-      content = require(absolutePath)
+      const jsRequire = require(absolutePath)
+      if (typeof jsRequire === 'function') {
+        content = jsRequire(serverless)
+      } else {
+        content = jsRequire
+      }
     }
 
     return content
