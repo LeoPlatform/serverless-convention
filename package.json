@@ -1,11 +1,11 @@
 {
   "name": "serverless-convention",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Serverless script for setting up file structure conventions",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LeoPlatform/serverless-leo.git"
+    "url": "git+https://github.com/LeoPlatform/serverless-convention.git"
   },
   "keywords": [
     "serverless",
@@ -18,9 +18,9 @@
   "author": "Taylor",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/LeoPlatform/serverless-leo/issues"
+    "url": "https://github.com/LeoPlatform/serverless-convention/issues"
   },
-  "homepage": "https://github.com/LeoPlatform/serverless-leo#readme",
+  "homepage": "https://github.com/LeoPlatform/serverless-convention#readme",
   "dependencies": {
     "bluebird": "^3.5.4",
     "find-up": "^3.0.0",
