@@ -5,6 +5,7 @@ const parse = require('parse-gitignore')
 const findUp = require('find-up')
 const ignore = require('ignore')
 const merge = require('lodash/merge')
+const Utils = require('serverless/lib/classes/Utils')
 
 const getDirInfo = (folderPath) => {
   const dirExists = fs.existsSync(folderPath)
@@ -23,7 +24,7 @@ const getDirInfo = (folderPath) => {
   })
 }
 
-function getContentFactory (serverless) {
+function getContentFactory(serverless) {
   return (absolutePath) => {
     let content
 
@@ -88,21 +89,34 @@ const folderResourceReducer = (findResourceInDirectoryInfos) => {
   }
 }
 
-module.exports = async (serverless) => {
-  serverless.cli.log(`Start`)
+module.exports = async function(serverless) {
+  let serverlessMod
+  let convention = {}
+  if (serverless.resolveVariable) {
+    serverlessMod = {
+      cli: console,
+      utils: new Utils({})
+    }
+    convention = await serverless.resolveVariable('self:custom.convention')
+  } else {
+    serverlessMod = serverless
+    convention = serverless.service.custom.convention
+  }
+
+  // serverlessMod.cli.log(`Start`)
   const gitignorepath = await findUp('.gitignore')
   const ignoreResourcePatterns = parse(fs.readFileSync(gitignorepath))
-  const getContent = getContentFactory(serverless)
-  const keys = Object.keys(serverless.service.custom.convention)
+  const getContent = getContentFactory(serverlessMod)
+  const keys = Object.keys(convention)
   return keys.reduce((acc, key) => {
-    if (serverless.service.custom.convention[key].pattern && serverless.service.custom.convention[key].folders) {
-      const asFileArray = serverless.service.custom.convention[key].asFileArray
-      const findResourcesInDirInfos = findResourceInDirectoryInfosFactory(serverless,
-        serverless.service.custom.convention[key].pattern,
+    if (convention[key].pattern && convention[key].folders) {
+      const asFileArray = convention[key].asFileArray
+      const findResourcesInDirInfos = findResourceInDirectoryInfosFactory(serverlessMod,
+        convention[key].pattern,
         ignoreResourcePatterns,
         getContent,
         asFileArray)
-      acc[key] = serverless.service.custom.convention[key].folders.reduce(folderResourceReducer(findResourcesInDirInfos), asFileArray ? [] : {})
+      acc[key] = convention[key].folders.reduce(folderResourceReducer(findResourcesInDirInfos), asFileArray ? [] : {})
     } else {
       throw new Error(`Include "${key}" is missing pattern or folders.`)
     }
