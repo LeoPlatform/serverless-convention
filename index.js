@@ -24,7 +24,7 @@ const getDirInfo = (folderPath) => {
   })
 }
 
-function getContentFactory(serverless) {
+function getContentFactory (serverless) {
   return (absolutePath) => {
     let content
 
@@ -89,7 +89,7 @@ const folderResourceReducer = (findResourceInDirectoryInfos) => {
   }
 }
 
-module.exports = async function(serverless) {
+module.exports = async function (serverless) {
   let serverlessMod
   let convention = {}
   if (serverless.resolveVariable) {
@@ -103,12 +103,11 @@ module.exports = async function(serverless) {
     convention = serverless.service.custom.convention
   }
 
-  // serverlessMod.cli.log(`Start`)
   const gitignorepath = await findUp('.gitignore')
   const ignoreResourcePatterns = parse(fs.readFileSync(gitignorepath))
   const getContent = getContentFactory(serverlessMod)
   const keys = Object.keys(convention)
-  return keys.reduce((acc, key) => {
+  let result = keys.reduce((acc, key) => {
     if (convention[key].pattern && convention[key].folders) {
       const asFileArray = convention[key].asFileArray
       const findResourcesInDirInfos = findResourceInDirectoryInfosFactory(serverlessMod,
@@ -122,4 +121,6 @@ module.exports = async function(serverless) {
     }
     return acc
   }, {})
+
+  return result
 }

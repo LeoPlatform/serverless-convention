@@ -1,4 +1,9 @@
 module.exports = {
-    "extends": "standard",
-    "env": { "mocha": true }
+    "env": {
+        "node": true,
+        "mocha": true
+    },
+    "extends": ["standard"],
+    "rules": {
+    }
 }

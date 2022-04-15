@@ -1,6 +1,6 @@
 {
   "name": "serverless-convention",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Serverless script for setting up file structure conventions",
   "main": "index.js",
   "repository": {
