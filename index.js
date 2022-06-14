@@ -5,7 +5,7 @@ const parse = require('parse-gitignore')
 const findUp = require('find-up')
 const ignore = require('ignore')
 const merge = require('lodash/merge')
-const Utils = require('serverless/lib/classes/Utils')
+const Utils = require('serverless/lib/classes/utils')
 
 const getDirInfo = (folderPath) => {
   const dirExists = fs.existsSync(folderPath)
