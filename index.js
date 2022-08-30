@@ -68,7 +68,7 @@ const findResourceInDirectoryInfosFactory = (serverless, matchPatterns, ignorePa
             const existingResourceDefinition = contentKeys.some(k => resources.hasOwnProperty(k))
             if (existingResourceDefinition) {
               const duplicateResourceDefinition = contentKeys.find(k => resources.hasOwnProperty(k))
-              serverless.cli.log(`WARNING: Resource ${duplicateResourceDefinition} has multiple definitions. They will be merged.)`)
+              serverless.cli.warn(`WARNING: Resource ${duplicateResourceDefinition} has multiple definitions. They will be merged.`)
             }
             serverless.cli.log(`Including resource definition: ${dirInfo.path}`)
             merge(resources, resourceContent)
@@ -104,7 +104,10 @@ module.exports = async function (serverless) {
   }
 
   const gitignorepath = await findUp('.gitignore')
-  const ignoreResourcePatterns = parse(fs.readFileSync(gitignorepath))
+  let ignoreResourcePatterns = []
+  if (gitignorepath) {
+    ignoreResourcePatterns = parse(fs.readFileSync(gitignorepath))
+  }
   const getContent = getContentFactory(serverlessMod)
   const keys = Object.keys(convention)
   let result = keys.reduce((acc, key) => {
