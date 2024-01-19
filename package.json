@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/LeoPlatform/serverless-convention#readme",
   "dependencies": {
-    "bluebird": "^3.5.4",
+    "bluebird": "^3.7.2",
     "find-up": "^3.0.0",
     "ignore": "^5.1.1",
     "lodash": "^4.17.15",
