@@ -32,7 +32,7 @@ function getContentFactory (serverless) {
     if (isYml) {
       content = serverless.utils.readFileSync(absolutePath)
     }
-    const isJsOrJSON = absolutePath.match(/.*\.js/i) || absolutePath.match(/.*\.json/i)
+    const isJsOrJSON = absolutePath.match(/.*\.js/i) || absolutePath.match(/.*\.ts/i) || absolutePath.match(/.*\.json/i)
     if (isJsOrJSON) {
       const jsRequire = require(absolutePath)
       if (typeof jsRequire === 'function') {
